@@ -41,7 +41,7 @@ class Okx {
       'OK-ACCESS-PASSPHRASE': this.passphrase,
       'x-simulated-trading': 1,
     };
-    if (options.env && options.env == 'production') {
+    if (this.options.env && this.options.env == 'production') {
       delete headers['x-simulated-trading'];
     }
     return headers;
