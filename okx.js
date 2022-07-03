@@ -1,14 +1,14 @@
-const { default: axios } = require("axios")
-const crypto = require("crypto")
-const appjson = "application/json"
+const { default: axios } = require('axios');
+const crypto = require('crypto');
+const appjson = 'application/json';
 class Okx {
   constructor(apikey, secretkey, passphrase, options = {}) {
     this.baseURL = options.sanbox
-      ? "https://www.okx.com"
-      : "https://www.okx.com"
-    this.apikey = apikey
-    this.secretkey = secretkey
-    this.passphrase = passphrase
+      ? 'https://www.okx.com'
+      : 'https://www.okx.com';
+    this.apikey = apikey;
+    this.secretkey = secretkey;
+    this.passphrase = passphrase;
   }
 
   /**
@@ -19,28 +19,32 @@ class Okx {
    * @returns {Object}
    */
   getHeaders(method, path, params = {}) {
-    let _time = this.timestamp()
-    let _sign
-    if (method === "GET") {
-      let arr = []
+    let _time = this.timestamp();
+    let _sign;
+    if (method === 'GET') {
+      let arr = [];
       for (const item of Object.keys(params)) {
-        arr.push(`${item}=${params[item]}`)
+        arr.push(`${item}=${params[item]}`);
       }
       _sign = this.signHttp(
-        _time + method + path + (arr.length ? "?" + arr.join("&") : "")
-      )
+        _time + method + path + (arr.length ? '?' + arr.join('&') : '')
+      );
     } else {
-      _sign = this.signHttp(_time + method + path + JSON.stringify(params))
+      _sign = this.signHttp(_time + method + path + JSON.stringify(params));
     }
-    return {
+    const headers = {
       Accept: appjson,
-      "Content-Type": appjson,
-      "OK-ACCESS-KEY": this.apikey,
-      "OK-ACCESS-SIGN": _sign,
-      "OK-ACCESS-TIMESTAMP": _time,
-      "OK-ACCESS-PASSPHRASE": this.passphrase,
-      "x-simulated-trading": 1,
+      'Content-Type': appjson,
+      'OK-ACCESS-KEY': this.apikey,
+      'OK-ACCESS-SIGN': _sign,
+      'OK-ACCESS-TIMESTAMP': _time,
+      'OK-ACCESS-PASSPHRASE': this.passphrase,
+      'x-simulated-trading': 1,
+    };
+    if (options.env && options.env == 'production') {
+      delete headers['x-simulated-trading'];
     }
+    return headers;
   }
 
   /**
@@ -48,7 +52,7 @@ class Okx {
    * @returns {string}
    */
   timestamp() {
-    return new Date().toISOString()
+    return new Date().toISOString();
   }
 
   /**
@@ -58,13 +62,13 @@ class Okx {
    */
   signHttp(str) {
     return crypto
-      .createHmac("sha256", this.secretkey)
+      .createHmac('sha256', this.secretkey)
       .update(str)
-      .digest("base64")
+      .digest('base64');
   }
 
   async http(method, path, params) {
-    method = method.toUpperCase()
+    method = method.toUpperCase();
     let options = Object.assign(
       {
         baseURL: this.baseURL,
@@ -72,18 +76,18 @@ class Okx {
         method: method,
       },
       { headers: this.getHeaders(method, path, params) }
-    )
+    );
     Object.assign(
       options,
-      method === "GET" ? { params: params } : { data: params }
-    )
-    const res = await axios(options)
-    if(res.data.code === '0'){
-      return res.data.data
-    }else{
-      throw new Error(res.data.msg)
+      method === 'GET' ? { params: params } : { data: params }
+    );
+    const res = await axios(options);
+    if (res.data.code === '0') {
+      return res.data.data;
+    } else {
+      throw new Error(res.data.msg);
     }
   }
 }
 
-module.exports = Okx
+module.exports = Okx;
