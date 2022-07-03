@@ -9,6 +9,7 @@ class Okx {
     this.apikey = apikey;
     this.secretkey = secretkey;
     this.passphrase = passphrase;
+    this.options = options;
   }
 
   /**
