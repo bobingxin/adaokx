@@ -8,8 +8,8 @@ class Account extends Okx {
     return await this.http('post', '/api/v5/account/set-leverage', data);
   }
 
-  async leverageInfo() {
-    return await this.http('get', '/api/v5/account/leverage-info', {});
+  async leverageInfo(data = {}) {
+    return await this.http('get', '/api/v5/account/leverage-info', data);
   }
 }
 
