@@ -1,4 +1,5 @@
 const { default: axios } = require('axios');
+const log = require('./log');
 const crypto = require('crypto');
 const appjson = 'application/json';
 class Okx {
@@ -82,10 +83,11 @@ class Okx {
       options,
       method === 'GET' ? { params: params } : { data: params }
     );
-    const res = await axios(options);
+    let res = await axios(options);
     if (res.data.code === '0') {
       return res.data.data;
     } else {
+      log.error('order_fail', res.data.data);
       throw new Error(res.data.msg);
     }
   }
