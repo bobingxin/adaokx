@@ -1,6 +1,6 @@
 var log4js = require('log4js');
 var logger = log4js.getLogger();
-
+logger.level = 'debug';
 function info(msg, data) {
   logger.info(msg, data);
 }
