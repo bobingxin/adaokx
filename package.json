@@ -4,12 +4,15 @@
   "description": "okx交易插件",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.27.2",
     "log4js": "^6.5.2"
+  },
+  "devDependencies": {
+    "jest": "^28.1.2"
   }
 }
