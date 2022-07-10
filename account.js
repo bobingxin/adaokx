@@ -19,6 +19,10 @@ class Account extends Okx {
   async balance(data = {}) {
     return await this.http("get", "/api/v5/account/balance", data);
   }
+
+  async positionsHistory(data = {}) {
+    return await this.http("get", "/api/v5/account/positions-history", data);
+  }
 }
 
 module.exports = Account;

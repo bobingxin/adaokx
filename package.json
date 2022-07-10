@@ -10,7 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.27.2",
-    "log4js": "^6.5.2"
+    "log4js": "^6.5.2",
+    "moment": "^2.29.4"
   },
   "devDependencies": {
     "jest": "^28.1.2"
