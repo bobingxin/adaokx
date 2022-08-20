@@ -1,12 +1,12 @@
-const { default: axios } = require('axios');
-const log = require('./log');
-const crypto = require('crypto');
-const appjson = 'application/json';
+const { default: axios } = require("axios");
+const log = require("./log");
+const crypto = require("crypto");
+const appjson = "application/json";
 class Okx {
   constructor(apikey, secretkey, passphrase, options = {}) {
     this.baseURL = options.sanbox
-      ? 'https://www.okx.com'
-      : 'https://www.okx.com';
+      ? "https://www.okx.com"
+      : "https://www.okx.com";
     this.apikey = apikey;
     this.secretkey = secretkey;
     this.passphrase = passphrase;
@@ -23,28 +23,28 @@ class Okx {
   getHeaders(method, path, params = {}) {
     let _time = this.timestamp();
     let _sign;
-    if (method === 'GET') {
+    if (method === "GET") {
       let arr = [];
       for (const item of Object.keys(params)) {
         arr.push(`${item}=${params[item]}`);
       }
       _sign = this.signHttp(
-        _time + method + path + (arr.length ? '?' + arr.join('&') : '')
+        _time + method + path + (arr.length ? "?" + arr.join("&") : "")
       );
     } else {
       _sign = this.signHttp(_time + method + path + JSON.stringify(params));
     }
     const headers = {
       Accept: appjson,
-      'Content-Type': appjson,
-      'OK-ACCESS-KEY': this.apikey,
-      'OK-ACCESS-SIGN': _sign,
-      'OK-ACCESS-TIMESTAMP': _time,
-      'OK-ACCESS-PASSPHRASE': this.passphrase,
-      'x-simulated-trading': 1,
+      "Content-Type": appjson,
+      "OK-ACCESS-KEY": this.apikey,
+      "OK-ACCESS-SIGN": _sign,
+      "OK-ACCESS-TIMESTAMP": _time,
+      "OK-ACCESS-PASSPHRASE": this.passphrase,
+      "x-simulated-trading": 1,
     };
-    if (this.options.env && this.options.env == 'production') {
-      delete headers['x-simulated-trading'];
+    if (this.options.env && this.options.env == "production") {
+      delete headers["x-simulated-trading"];
     }
     return headers;
   }
@@ -64,9 +64,9 @@ class Okx {
    */
   signHttp(str) {
     return crypto
-      .createHmac('sha256', this.secretkey)
+      .createHmac("sha256", this.secretkey)
       .update(str)
-      .digest('base64');
+      .digest("base64");
   }
 
   async http(method, path, params) {
@@ -81,14 +81,14 @@ class Okx {
     );
     Object.assign(
       options,
-      method === 'GET' ? { params: params } : { data: params }
+      method === "GET" ? { params: params } : { data: params }
     );
     let res = await axios(options);
-    if (res.data.code === '0') {
+    if (res.data.code === "0") {
       return res.data.data;
     } else {
-      log.error('order_fail', res.data.data);
-      throw new Error(res.data.msg);
+      log.error("order_fail", res.data.data);
+      throw new OkxError(res.data.msg, res.data.data);
     }
   }
 }
