@@ -23,6 +23,15 @@ class Transcation extends Okx {
   async orderInfo(data) {
     return await this.http("get", "/api/v5/trade/order", data);
   }
+
+  /**
+   * 一件平仓功能
+   * @param {*} data
+   * @returns
+   */
+  async closePosition(data = {}) {
+    return await this.http("post", "/api/v5/trade/close-position", data);
+  }
 }
 
 module.exports = Transcation;
