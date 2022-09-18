@@ -1,6 +1,7 @@
 const { default: axios } = require("axios");
 const log = require("./log");
 const crypto = require("crypto");
+const OkxError = require("./error/okx");
 const appjson = "application/json";
 class Okx {
   constructor(apikey, secretkey, passphrase, options = {}) {

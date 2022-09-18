@@ -4,3 +4,4 @@ class OkxError extends Error {
     this.message = JSON.stringify(data);
   }
 }
+module.exports = OkxError;
