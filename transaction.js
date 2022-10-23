@@ -37,7 +37,7 @@ class Transcation extends Okx {
    * 取消委托
    * @returns
    */
-  async orderAlgo(data = {}) {
+  async cancelAlgos(data = {}) {
     return await this.http("post", "/api/v5/trade/cancel-algos", data);
   }
 }
